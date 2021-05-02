@@ -1,6 +1,5 @@
-# coding=utf-8
-
 import dateparser
+import math
 import pytz
 
 from datetime import datetime
@@ -50,3 +49,25 @@ def interval_to_milliseconds(interval):
         return int(interval[:-1]) * seconds_per_unit[interval[-1]] * 1000
     except (ValueError, KeyError):
         return None
+
+
+def round_step_size(quantity, step_size):
+    """Rounds a given quantity to a specific step size
+
+    :param quantity: required
+    :type quantity: decimal
+    :param step_size: required
+    :type step_size: decimal
+
+    :return: decimal
+    """
+    precision = int(round(-math.log(step_size, 10), 0))
+    return float(round(quantity, precision))
+
+
+def convert_ts_str(ts_str):
+    if ts_str is None:
+        return ts_str
+    if type(ts_str) == int:
+        return ts_str
+    return date_to_milliseconds(ts_str)
